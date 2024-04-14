@@ -1,7 +1,7 @@
-import { Cell } from "../pkg/wasm_game_of_life.js";
-import { CELL_SIZE, GRID_COLOR, DEAD_COLOR, ALIVE_COLOR } from "./constants.js";
+import { CELL_SIZE, GRID_COLOR, DEAD_COLOR, ALIVE_COLOR, BIT_CONVERT } from "./constants.js";
+import { bitIsSet } from "./utils.js";
 
-const getIndex = (row, column , width) => {
+const getIndex = (row, column, width) => {
     return row * width + column;
 };
 
@@ -15,7 +15,7 @@ export const createCanvas = (height, width) => {
     return canvas;
 }
 
-export const drawGrid = (ctx , height , width) => {
+export const drawGrid = (ctx, height, width) => {
     ctx.beginPath();
     ctx.strokeStyle = GRID_COLOR;
 
@@ -34,21 +34,21 @@ export const drawGrid = (ctx , height , width) => {
     ctx.stroke();
 };
 
-export const drawCells = (ctx, memory , height , width , universe) => {
+export const drawCells = (ctx, memory, height, width, universe) => {
     const cellsPtr = universe.cells();
 
     // access the buffer contents of an exported memory:
-    const cells = new Uint8Array(memory.buffer, cellsPtr, width * height);
+    const cells = new Uint8Array(memory.buffer, cellsPtr, width * height / BIT_CONVERT);
 
     ctx.beginPath();
 
     for (let row = 0; row < height; row++) {
         for (let col = 0; col < width; col++) {
-            const idx = getIndex(row, col , width);
+            const idx = getIndex(row, col, width);
 
-            ctx.fillStyle = cells[idx] === Cell.Dead
-                ? DEAD_COLOR
-                : ALIVE_COLOR;
+            ctx.fillStyle = bitIsSet(idx, cells)
+                ? ALIVE_COLOR
+                : DEAD_COLOR;
 
             ctx.fillRect(
                 col * (CELL_SIZE + 1) + 1,
