@@ -40,12 +40,6 @@ To build the package, we need an additional tool, wasm-pack. This helps compile 
   cd my-project
 ```
 
-#### Go to the project directory
-
-```bash
-  cd my-project
-```
-
 #### Building the package
 
 Now that we've got everything set up, let's build the package. We'll be using the generated code in a native ES module and in Node.js. For this purpose, we'll use the --target argument in wasm-pack build to specify what kind of WebAssembly and JavaScript is generated.
