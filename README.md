@@ -51,6 +51,12 @@ Now that we've got everything set up, let's build the package. We'll be using th
 Serve the root directory of the project with a local web server
 
 ```bash
-  example - python3 -m http.server
+  python3 -m http.server
 ```
 
+#### Testing package
+Test package with command
+
+```bash
+  wasm-pack test --chrome        
+```
