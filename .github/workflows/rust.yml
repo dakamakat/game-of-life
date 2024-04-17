@@ -22,7 +22,7 @@ jobs:
       run: cargo install wasm-pack
     - name: Wasm-pack build
       run: wasm-pack build --release --target web
-  test:
+  test_and_deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -32,3 +32,9 @@ jobs:
 
     - run: wasm-pack test --headless --chrome
     - run: wasm-pack test --headless --firefox
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./pkg
