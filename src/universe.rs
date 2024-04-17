@@ -1,7 +1,13 @@
+use core::fmt;
+use std::{
+    fmt::Display,
+    process::{ExitCode, Termination},
+};
+
 use fixedbitset::FixedBitSet;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use crate::{coordinate::Coordinate, utilities::bool_random};
+use crate::coordinate::Coordinate;
 
 #[wasm_bindgen]
 pub struct Universe {
@@ -18,11 +24,7 @@ impl Universe {
 
         let size = (width * height) as usize;
 
-        let mut cells = FixedBitSet::with_capacity(size);
-
-        for i in 0..size {
-            cells.set(i, bool_random());
-        }
+        let cells = FixedBitSet::with_capacity(size);
 
         Universe {
             width,
@@ -43,7 +45,6 @@ impl Universe {
         FixedBitSet::with_capacity(capacity);
     }
 
-    ///Try this out
     pub fn set_cells(&mut self, cells: Vec<Coordinate>) {
         for coordinate in cells.iter().cloned() {
             let idx = self.get_index(coordinate.y, coordinate.x);
@@ -121,7 +122,6 @@ impl Universe {
 
 /// Non wasm Impl for testing purposes
 impl Universe {
-
     /// Get the dead and alive values of the entire universe.
     pub fn get_cells(&self) -> &FixedBitSet {
         &self.cells
@@ -134,5 +134,27 @@ impl Universe {
             let idx = self.get_index(row, col);
             self.cells.set(idx, true)
         }
+    }
+}
+
+impl Display for Universe {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for row in 0..self.height {
+            for col in 0..self.width {
+                let idx = self.get_index(row, col);
+                let cell = self.cells[idx];
+
+                let symbol = if cell { '◻' } else { '◼' };
+                write!(f, "{}", symbol)?;
+            }
+            write!(f, "\n")?;
+        }
+
+        Ok(())
+    }
+}
+impl Termination for Universe {
+    fn report(self) -> std::process::ExitCode {
+        ExitCode::SUCCESS
     }
 }
