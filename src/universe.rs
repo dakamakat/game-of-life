@@ -7,7 +7,7 @@ use std::{
 use fixedbitset::FixedBitSet;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use crate::coordinate::Coordinate;
+use crate::{coordinate::Coordinate, pattern::init_pattern};
 
 #[wasm_bindgen]
 pub struct Universe {
@@ -18,13 +18,12 @@ pub struct Universe {
 
 #[wasm_bindgen]
 impl Universe {
-    pub fn new() -> Universe {
-        let width = 180;
-        let height = 100;
-
+    pub fn new(pattern: u32 , width: u32 , height: u32) -> Universe {
         let size = (width * height) as usize;
 
-        let cells = FixedBitSet::with_capacity(size);
+        let mut cells = FixedBitSet::with_capacity(size);
+
+        init_pattern(pattern, &mut cells, size);
 
         Universe {
             width,
@@ -33,16 +32,18 @@ impl Universe {
         }
     }
 
-    pub fn set_width(&mut self, width: u32) {
+    pub fn set_width(&mut self, width: u32) -> u32 {
         self.width = width;
         let capacity = (self.height * width) as usize;
         FixedBitSet::with_capacity(capacity);
+        width
     }
 
-    pub fn set_height(&mut self, height: u32) {
+    pub fn set_height(&mut self, height: u32) -> u32 {
         self.height = height;
         let capacity = (self.width * height) as usize;
         FixedBitSet::with_capacity(capacity);
+        height
     }
 
     pub fn set_cells(&mut self, cells: Vec<Coordinate>) {

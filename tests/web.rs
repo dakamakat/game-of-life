@@ -10,7 +10,7 @@ mod test {
 
     #[test]
     pub fn input_spaceship() -> Universe {
-        let mut universe = Universe::new();
+        let mut universe = Universe::new(0 , 100 , 80);
         universe.set_width(6);
         universe.set_height(6);
         universe.set_cells_borrow(&[(1, 2), (2, 3), (3, 1), (3, 2), (3, 3)]);
@@ -20,7 +20,7 @@ mod test {
 
     #[test]
     pub fn expected_spaceship() -> Universe {
-        let mut universe = Universe::new();
+        let mut universe = Universe::new(0 , 100 , 80);
         universe.set_width(6);
         universe.set_height(6);
         universe.set_cells_borrow(&[(2, 1), (2, 3), (3, 2), (3, 3), (4, 2)]);
