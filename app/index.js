@@ -7,10 +7,9 @@ const wasm = await __wbg_init();
 const memory = wasm.memory;
 
 let state = new State(false);
-initUI(state);
 
 // Construct the universe, and get its width and height.
-const universe = Universe.new(1 , 100 , 80);
+const universe = Universe.new(1, 100, 80);
 
 const width = universe.width();
 const height = universe.height();
@@ -29,5 +28,7 @@ const renderLoop = () => {
 };
 
 // Start the rendering loop
-state.play(renderLoop);
+state.render = renderLoop;
+initUI(state);
+state.render();
 

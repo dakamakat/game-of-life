@@ -1,18 +1,17 @@
 class State {
 
+    render 
+    isPaused 
     animationId 
 
-    constructor(isPaused) {
+    constructor(isPaused , render) {
         this.isPaused = isPaused;
+        this.render = render;
     }
 
     pause = () => {
         cancelAnimationFrame(this.animationId);
         this.animationId = null;
-    };
-
-    play = (render) => {
-        render();
     };
 }
 

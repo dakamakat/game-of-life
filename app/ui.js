@@ -1,10 +1,9 @@
 import ButtonComponent from './buttonComponent.js';
 
 export function initUI(state) {
-
     initPauseButton((function() {
         if (state.isPaused) {
-            state.play();
+            state.render();
             this.textContent = "⏸";
         }
         else {
