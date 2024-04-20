@@ -21,6 +21,7 @@ jobs:
     - name: Wasm-pack build
       run: wasm-pack build --release --target web
   test:
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
