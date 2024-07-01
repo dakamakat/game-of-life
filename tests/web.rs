@@ -39,7 +39,9 @@ mod test {
 
         // Call `tick` and then see if the cells in the `Universe`s are the same.
         input_universe.tick();
+
         console_log!("{}", input_universe);
+
         assert_eq!(input_universe.get_cells(), expected_universe.get_cells());
     }
 }

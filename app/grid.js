@@ -17,7 +17,7 @@ export const createCanvas = (height, width) => {
 
 export const drawGrid = (ctx, height, width) => {
     ctx.beginPath();
-    ctx.strokeStyle = GRID_COLOR;
+    ctx.fillStyle = GRID_COLOR;
 
     // Vertical lines.
     for (let i = 0; i <= width; i++) {
@@ -38,7 +38,8 @@ export const drawCells = (ctx, memory, height, width, universe) => {
     const cellsPtr = universe.cells();
 
     // access the buffer contents of an exported memory:
-    const cells = new Uint8Array(memory.buffer, cellsPtr, width * height / BIT_CONVERT);
+    const cells = new Uint8Array(memory.buffer, cellsPtr, (width * height) / BIT_CONVERT);
+    cells.at(1)
 
     ctx.beginPath();
 
@@ -46,8 +47,8 @@ export const drawCells = (ctx, memory, height, width, universe) => {
     ctx.fillStyle = ALIVE_COLOR;
     for (let row = 0; row < height; row++) {
         for (let col = 0; col < width; col++) {
-            const idx = getIndex(row, col);
-            if (!bitIsSet(idx , cells)) {
+            const idx = getIndex(row, col, width);
+            if (!bitIsSet(idx, cells)) {
                 continue;
             }
 
@@ -64,8 +65,8 @@ export const drawCells = (ctx, memory, height, width, universe) => {
     ctx.fillStyle = DEAD_COLOR;
     for (let row = 0; row < height; row++) {
         for (let col = 0; col < width; col++) {
-            const idx = getIndex(row, col);
-            if (bitIsSet(idx , cells)) {
+            const idx = getIndex(row, col , width);
+            if (bitIsSet(idx, cells)) {
                 continue;
             }
 
